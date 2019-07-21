@@ -17,5 +17,6 @@ Due to large string in MQTT discovery function, PubSubClient.h MQTT_MAX_PACKET_S
 
 ## Credits
 Thanks to all contributors especially:
+* lekobob https://github.com/lekobob/mitsu_mqtt
 * SwiCago https://github.com/SwiCago/HeatPump
 * Hadley https://nicegear.co.nz/blog/hacking-a-mitsubishi-heat-pump-air-conditioner/
