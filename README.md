@@ -1,15 +1,25 @@
 # MitsuCon
 Mitsubishi Heat Pump (Air Conditioner) Controller for Home Assistant
 
-Arduino project to build Mitsubishi heat pump controller for Home Assistant. It has 2 versions:
+Arduino project to build Mitsubishi heat pump controller for Home Assistant. It has 2 branches, classic and native.
 
-* Classic: Tried-and-true code working for years.
-* Native: new development code without custom component. Target for Home Assistant 1.00.
+## Classic
+This version is proven to working well on Home Assistant <=0.96. It has 2 parts:
+
+* arduino sketch mitsubishi_heatpump_mqtt_esp8266_esp32.ino
+* Home Assistant custom component mitsubishi_mqtt
+  
+Chris Davis has a very detail instruction here:
+https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-1/
+https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-2/
+
+## Native: 
+New development code without custom component. This branch is still in beta.
 
 
 ![Wemos D1 Mini Adapter](https://user-images.githubusercontent.com/44964969/51798270-c3392980-2242-11e9-8986-cffc5fe4d287.jpg)
 
-This code is based on https://github.com/SwiCago/HeatPump library.
+This project is based on https://github.com/SwiCago/HeatPump library.
 
 *Mitsubishi means Mitsubishi Electric, not Mitsubishi Heavy Industries.
 
