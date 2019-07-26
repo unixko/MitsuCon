@@ -1,12 +1,19 @@
 
 # Classic Controller
 
-This proven code is tested on Home Assistant 0.96. It consists of 2 parts:
-* Arduino sketch
-* Home Assistant custom components
+This code is proven to working well on Home Assistant <=0.96. It has 2 parts:
+
+* arduino sketch for ESP8266/ESP32 board
+* Home Assistant custom component file to place in Home Assistant server
+
+Chris Davis has a very detailed instruction blog:
+
+https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-1/
+
+https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-2/
 
 ## Arduino
-This code supports ESP8266 and ESP32 board. Modify your credentials like WiFi password and MQTT server in mitsubishi_heatpump_mqtt_esp8266_esp32.h first and then compile and flash mitsubishi_heatpump_mqtt_esp8266_esp32.ino to baord.
+This sketch supports ESP8266 and ESP32 board. Modify your credentials like WiFi password and MQTT server in mitsubishi_heatpump_mqtt_esp8266_esp32.h first and then compile and flash mitsubishi_heatpump_mqtt_esp8266_esp32.ino to baord.
 
 ## Home Assistant
 You need MQTT Server like Mosquito broker add-ons.
