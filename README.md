@@ -8,9 +8,9 @@ Arduino project to build Mitsubishi heat pump controller for Home Assistant. It 
 ## Classic
 This version is proven to working well on Home Assistant <=0.96. It has 2 parts:
 
-* arduino sketch mitsubishi_heatpump_mqtt_esp8266_esp32.ino
-* Home Assistant custom component mitsubishi_mqtt
-  
+* arduino sketch for ESP8266/ESP32 board
+* Home Assistant custom component file to place in Home Assistant server
+
 Chris Davis has a very detailed instruction blog:
 
 https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-1/
