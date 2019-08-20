@@ -1,6 +1,8 @@
 # MitsuCon
 Mitsubishi Heat Pump (Air Conditioner) Controller for Home Assistant
 
+**Native code works with Home Assistant 0.97.2**
+
 ![Wemos D1 Mini Adapter](https://user-images.githubusercontent.com/44964969/51798270-c3392980-2242-11e9-8986-cffc5fe4d287.jpg)
 
 Arduino project to build Mitsubishi heat pump controller for Home Assistant. It has 2 branches, classic and native.
