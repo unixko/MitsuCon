@@ -1,7 +1,7 @@
 # MitsuCon
 Mitsubishi Heat Pump (Air Conditioner) Controller for Home Assistant
 
-**Native code works with Home Assistant 0.97.2**
+**Native code works with Home Assistant 0.98.1**
 
 ![Wemos D1 Mini Adapter](https://user-images.githubusercontent.com/44964969/51798270-c3392980-2242-11e9-8986-cffc5fe4d287.jpg)
 
@@ -19,7 +19,7 @@ https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-1/
 https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-2/
 
 ## Native: 
-New development code without custom component. This branch is still in beta.
+New development code using native MQTT HVAC component built-in Home Assistant, not required custom component.
 
 This project is based on https://github.com/SwiCago/HeatPump library.
 
