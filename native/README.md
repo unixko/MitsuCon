@@ -1,6 +1,6 @@
 # Native Controller
 
-*works with HA 0.97.2.
+*works with HA 0.98.1.
 
 Build ESP-8266 device to interface between Mitsubishi Electric heat pump and Home Assistant. This controller utilizes Home Assistant native MQTT HVAC component so mostly guaranteed compatible with future Home Assistant updates. 
 
@@ -10,7 +10,6 @@ This code uses Home Assistant MQTT discovery feature so if you already configure
 Due to large string in MQTT discovery function, PubSubClient.h MQTT_MAX_PACKET_SIZE must set to 1280.
 
 ## Known Issues
-* Sometimes heat pump entity in HA shows as Unavailable. Wait for next HA device refresh and heat pump entity will come back or restart either HA or controller.
 * Sometimes heat pump unit turns off instead when send temperature changing command.
 * When change setting on HA UI, change will effect immediately but UI will delay for next data pull to refresh new status.
 
