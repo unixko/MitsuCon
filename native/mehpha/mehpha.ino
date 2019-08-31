@@ -16,7 +16,7 @@ PubSubClient mqtt_client(espClient);
 HeatPump hp;
 unsigned long lastTempSend;
 
-const char* controller_sw_version       = "20190721-1300"; // Software Version displayed in Home Assistant
+const char* controller_sw_version       = "20190831-1950"; // Software Version displayed in Home Assistant
 
 void mqttConnect() {
   while (!mqtt_client.connected()) {
@@ -67,7 +67,7 @@ void mqttAutoDiscovery() {
     swing_modes.add("4");
     swing_modes.add("5");
     swing_modes.add("swing");
-  rootDiscovery["avty_t"]              = "~/tele/lwt";
+//  rootDiscovery["avty_t"]              = "~/tele/lwt";
   rootDiscovery["curr_temp_t"]         = "~/tele/temp";
   rootDiscovery["curr_temp_tpl"]       = "{{ value_json.roomTemperature }}";
   rootDiscovery["mode_cmd_t"]          = "~/cmnd/mode";
@@ -87,7 +87,7 @@ void mqttAutoDiscovery() {
     device["name"]                     = ha_entity_id;
     JsonArray ids = device.createNestedArray("ids");
       ids.add(chip_id);
-    device["mf"]                       = "UnixKo";  // Your name here
+    device["mf"]                       = "MitsuCon";
     device["mdl"]                      = "Mitsubishi Electric Heat Pump";
     device["sw"]                       = controller_sw_version;
 
