@@ -149,6 +149,8 @@ void hpStatusChanged(heatpumpStatus currentStatus) {
   if (!mqtt_client.publish(heatpump_attribute_topic, bufferTimers, true)) {
     mqtt_client.publish(heatpump_debug_topic, "failed to publish ATTR topic");
   }
+  // send online state
+  mqtt_client.publish(heatpump_availability_topic, "online", true);
 }
 
 void hpPacketDebug(byte* packet, unsigned int length, char* packetDirection) {
