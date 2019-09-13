@@ -4,7 +4,7 @@
 #include <PubSubClient.h>
 #include <HeatPump.h>
 
-#include "mehpha.h"
+#include "mitsucon.h"
 
 #ifdef OTA
   #include <ESP8266mDNS.h>
