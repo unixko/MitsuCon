@@ -16,7 +16,7 @@ PubSubClient mqtt_client(espClient);
 HeatPump hp;
 unsigned long lastTempSend;
 
-const char* controller_sw_version       = "20190831-1950"; // Software Version displayed in Home Assistant
+const char* controller_sw_version       = "20190913-1340"; // Software Version displayed in Home Assistant
 
 void mqttConnect() {
   while (!mqtt_client.connected()) {
@@ -67,7 +67,7 @@ void mqttAutoDiscovery() {
     swing_modes.add("4");
     swing_modes.add("5");
     swing_modes.add("swing");
-//  rootDiscovery["avty_t"]              = "~/tele/lwt";
+  rootDiscovery["avty_t"]              = "~/tele/lwt";
   rootDiscovery["curr_temp_t"]         = "~/tele/temp";
   rootDiscovery["curr_temp_tpl"]       = "{{ value_json.roomTemperature }}";
   rootDiscovery["mode_cmd_t"]          = "~/cmnd/mode";
@@ -149,7 +149,7 @@ void hpStatusChanged(heatpumpStatus currentStatus) {
   if (!mqtt_client.publish(heatpump_attribute_topic, bufferTimers, true)) {
     mqtt_client.publish(heatpump_debug_topic, "failed to publish ATTR topic");
   }
-  // send online state
+
   mqtt_client.publish(heatpump_availability_topic, "online", true);
 }
 
