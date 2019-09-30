@@ -1,7 +1,11 @@
 
 # Classic Controller
 
-This code is proven to working well on Home Assistant <=0.96. It has 2 parts:
+TESTED with HA <=0.99.3 - added heat/cool mode and hvac_action.
+
+This code is proven to working well on Home Assistant for years before HA developed native MQTT HVAC template. Since it creates a custom component directly in HA it works faster than native component. User interface is responsed almost instantly. However, a custom component aldo need to be maintained along each release of Home Assistant for frequently break changes.
+
+Classic Controller has 2 parts:
 
 * arduino sketch for ESP8266/ESP32 board
 * Home Assistant custom component file to place in Home Assistant server
@@ -32,7 +36,7 @@ climate:
      state_topic: "heatpump"
 
 ```
-or for device not support HEAT mode, modes is optional
+if your device is not support HEAT mode, like air conditioner unit, define `modes` for supported modes.
 ```c++
 climate:
    - platform: mitsubishi_mqtt
