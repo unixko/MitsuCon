@@ -204,18 +204,20 @@ class MqttClimate(ClimateDevice):
     def hvac_action(self):
         if self._current_power == 'OFF':
             return CURRENT_HVAC_OFF
-
-        if self._current_status:
-            if self._hvac_mode == 'HEAT':
-                return CURRENT_HVAC_HEAT
-            if self._hvac_mode == 'COOL':
-                return CURRENT_HVAC_COOL
-            if self._hvac_mode == 'DRY':
-                return CURRENT_HVAC_DRY
-            if self._hvac_mode == 'FAN':
-                return CURRENT_HVAC_FAN
-
-        return CURRENT_HVAC_IDLE
+        if self._hvac_mode == 'FAN':
+            return CURRENT_HVAC_FAN
+        if not self._current_status:
+            return CURRENT_HVAC_IDLE
+        if self._hvac_mode == 'COOL':
+            return CURRENT_HVAC_COOL
+        if self._hvac_mode == 'HEAT':
+            return CURRENT_HVAC_HEAT
+        if self._hvac_mode == 'DRY':
+            return CURRENT_HVAC_DRY
+        if self._hvac_mode == 'AUTO' and self._current_temperature > self._target_temperature:
+            return CURRENT_HVAC_COOL
+        if self._hvac_mode == 'AUTO' and self._current_temperature <= self._target_temperature:
+            return CURRENT_HVAC_HEAT
 
     @property
     def hvac_mode(self):
