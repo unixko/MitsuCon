@@ -16,7 +16,7 @@ PubSubClient mqtt_client(espClient);
 HeatPump hp;
 unsigned long lastTempSend;
 
-const char* controller_sw_version       = "20190913-1340"; // Software Version displayed in Home Assistant
+const char* controller_sw_version       = "20190925"; // Software Version displayed in Home Assistant
 
 void mqttConnect() {
   while (!mqtt_client.connected()) {
@@ -36,10 +36,10 @@ void mqttAutoDiscovery() {
   const String chip_id                 = String(ESP.getChipId());
   const String mqtt_discov_topic       = String(mqtt_discov_prefix) + "/climate/" + chip_id + "/config";
   
-  const size_t bufferSizeDiscovery = JSON_OBJECT_SIZE(52);
+  const size_t bufferSizeDiscovery = JSON_OBJECT_SIZE(60);
   DynamicJsonDocument rootDiscovery(bufferSizeDiscovery);
   
-  rootDiscovery["name"]                = ha_entity_id;
+  rootDiscovery["name"]                = name;
   rootDiscovery["uniq_id"]             = chip_id;
   rootDiscovery["~"]                   = heatpump_topic;
   rootDiscovery["min_temp"]            = min_temp;
@@ -67,8 +67,8 @@ void mqttAutoDiscovery() {
     swing_modes.add("4");
     swing_modes.add("5");
     swing_modes.add("swing");
-  rootDiscovery["avty_t"]              = "~/tele/lwt";
-  rootDiscovery["curr_temp_t"]         = "~/tele/temp";
+  rootDiscovery["avty_t"]              = "~/tele/avty";
+  rootDiscovery["curr_temp_t"]         = "~/tele/curr";
   rootDiscovery["curr_temp_tpl"]       = "{{ value_json.roomTemperature }}";
   rootDiscovery["mode_cmd_t"]          = "~/cmnd/mode";
   rootDiscovery["mode_stat_t"]         = "~/tele/stat";
@@ -82,16 +82,20 @@ void mqttAutoDiscovery() {
   rootDiscovery["swing_mode_cmd_t"]    = "~/cmnd/vane";
   rootDiscovery["swing_mode_stat_t"]   = "~/tele/stat";
   rootDiscovery["swing_mode_stat_tpl"] = "{{ value_json.vane | lower }}";
+  rootDiscovery["act_t"]               = "~/tele/curr";
+  rootDiscovery["act_tpl"]             = "{%set hp='climate.'+value_json.name|lower|replace(' ','_')%}{%if states(hp)=='off'%}off{%elif states(hp)=='fan'%}fan{%elif value_json.operating==false%}idle{%elif states(hp)=='heat'%}heating{%elif states(hp)=='cool' %}cooling{%elif states(hp)=='dry' %}drying{%elif states(hp)=='heat_cool'and(state_attr(hp,'temperature')-state_attr(hp,'current_temperature')>0)%}heating{%elif states(hp)=='heat_cool'and(state_attr(hp,'temperature')-state_attr(hp,'current_temperature')<0)%}cooling{%endif%}";
+#ifdef _timersAttr
   rootDiscovery["json_attr_t"]         = "~/tele/attr";
+#endif
   JsonObject device                    = rootDiscovery.createNestedObject("device");
-    device["name"]                     = ha_entity_id;
+    device["name"]                     = name;
     JsonArray ids = device.createNestedArray("ids");
       ids.add(chip_id);
     device["mf"]                       = "MitsuCon";
     device["mdl"]                      = "Mitsubishi Electric Heat Pump";
     device["sw"]                       = controller_sw_version;
 
-  char bufferDiscovery[1280];
+  char bufferDiscovery[2048];
   serializeJson(rootDiscovery, bufferDiscovery);
 
   if (!mqtt_client.publish(mqtt_discov_topic.c_str(), bufferDiscovery, true)) {
@@ -121,22 +125,25 @@ void hpSettingsChanged() {
 }
 
 void hpStatusChanged(heatpumpStatus currentStatus) {
-  const size_t bufferSizeInfo = JSON_OBJECT_SIZE(2);
+  const size_t bufferSizeInfo = JSON_OBJECT_SIZE(4);
   DynamicJsonDocument rootInfo(bufferSizeInfo);
 
-  rootInfo["roomTemperature"] = currentStatus.roomTemperature;
+  rootInfo["name"]              = name;
+  rootInfo["roomTemperature"]   = currentStatus.roomTemperature;
+  rootInfo["operating"]         = currentStatus.operating;
 
   char bufferInfo[512];
   serializeJson(rootInfo, bufferInfo);
 
-  if (!mqtt_client.publish(heatpump_temperature_topic, bufferInfo, true)) {
-    mqtt_client.publish(heatpump_debug_topic, "failed to publish TEMP topic");
+  if (!mqtt_client.publish(heatpump_current_topic, bufferInfo, true)) {
+    mqtt_client.publish(heatpump_debug_topic, "failed to publish CURR topic");
   }
 
+#ifdef _timersAttr
   const size_t bufferSizeTimers = JSON_OBJECT_SIZE(5);
   DynamicJsonDocument rootTimers(bufferSizeTimers);
-
-  rootTimers["hvac_action"]      = currentStatus.operating;
+                    
+														   
   rootTimers["timer_set"]        = currentStatus.timers.mode;
   rootTimers["timer_on_mins"]    = currentStatus.timers.onMinutesSet;
   rootTimers["timer_on_remain"]  = currentStatus.timers.onMinutesRemaining;
@@ -149,6 +156,7 @@ void hpStatusChanged(heatpumpStatus currentStatus) {
   if (!mqtt_client.publish(heatpump_attribute_topic, bufferTimers, true)) {
     mqtt_client.publish(heatpump_debug_topic, "failed to publish ATTR topic");
   }
+#endif
 
   mqtt_client.publish(heatpump_availability_topic, "online", true);
 }
