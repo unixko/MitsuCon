@@ -1,14 +1,31 @@
 # MitsuCon
 Mitsubishi Heat Pump (Air Conditioner) Controller for Home Assistant
 
-**Native code works with Home Assistant 0.98.1**
+*New version with hvac_action. Plase increase PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048.
 
 ![Wemos D1 Mini Adapter](https://user-images.githubusercontent.com/44964969/51798270-c3392980-2242-11e9-8986-cffc5fe4d287.jpg)
 
-Arduino project to build Mitsubishi heat pump controller for Home Assistant. It has 2 branches, classic and native.
+Build ESP-8266 device to interface between Mitsubishi Electric heat pump and Home Assistant. This code utilizes Home Assistant native MQTT HVAC component with MQTT discovery feature so it should be compatible with future Home Assistant updates and will be added to Home Assistant automatically without any configuration.
 
-## Classic
-This version is proven to working well on Home Assistant <=0.96. It has 2 parts:
+## Hardware
+Tested on Wemos D1 mini board with Home Assistant 0.96 and Mosquitto broker add-on 5.0.
+
+## Build a code
+Using Arduino IDE to modify configuration and complie file for your hardware.
+
+Arduino IDE 1.8.10
+ArduinoJson 6.12.0
+PubSubClient 2.7.0
+
+Edit file Arduino\libraries\PubSubClient\PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048.
+
+## Known Issues
+* Sometimes heat pump unit turns off instead when send temperature changing command.
+* When change setting on HA UI, change will effect immediately but UI will delay for next data pull to refresh new status.
+* Cannot use imperial (fahrenheit) unit. Waiting for Home Assistant support soon.
+
+## Classic Code
+The Classic folder is a code proven to working well on Home Assistant < 0.100.0. It has 2 parts:
 
 * arduino sketch for ESP8266/ESP32 board
 * Home Assistant custom component file to place in Home Assistant server
@@ -16,12 +33,21 @@ This version is proven to working well on Home Assistant <=0.96. It has 2 parts:
 Chris Davis has a very detailed instruction blog:
 
 https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-1/
+
 https://chrdavis.github.io/hacking-a-mitsubishi-heat-pump-Part-2/
 
-## Native: 
-New development code using native MQTT HVAC component built-in Home Assistant, not required custom component.
+## Other Projects
+Interesting projects developed with different design choices: 
 
-This project is based on https://github.com/SwiCago/HeatPump library.
+WiFi manager and web interface
+https://github.com/gysmo38/mitsubishi2MQTT
+
+Enhanced WiFi manager, web interface and mroe functions
+https://github.com/dzungpv/mitsubishi2MQTT
+
+Added Platform IO, Added SSL, Added an RGB LED
+https://github.com/SittingDuc/MitsuCon
+
 
 ## Credits
 Thanks to all contributors especially:
