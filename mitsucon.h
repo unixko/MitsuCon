@@ -1,11 +1,12 @@
-// Home Assistant Mitsubishi Electric Heat Pump Controller https://github.com/unixko/mehpha
+// Home Assistant Mitsubishi Electric Heat Pump Controller https://github.com/unixko/MitsuCon
 // using native MQTT Climate (HVAC) component with MQTT discovery for automatic configuration
 // Set PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048
 
+// enable extra MQTT topic for debug/timer info
 bool _debugMode  = false;
 bool _timersAttr = false;
 
-//enable or disable OTA and OTA password
+// comment out to disable OTA
 #define OTA
 const char* ota_password  = "OTA_PASSWORD";
 
