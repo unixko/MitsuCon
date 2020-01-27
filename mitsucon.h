@@ -1,8 +1,9 @@
 // Home Assistant Mitsubishi Electric Heat Pump Controller https://github.com/unixko/mehpha
 // using native MQTT Climate (HVAC) component with MQTT discovery for automatic configuration
-// Set PubSubClient.h MQTT_MAX_PACKET_SIZE to 1280
+// Set PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048
 
-bool _debugMode = false;
+bool _debugMode  = false;
+bool _timersAttr = false;
 
 //enable or disable OTA and OTA password
 #define OTA
@@ -20,12 +21,12 @@ const char* mqtt_password = "MQTT_PASSWORD";
 
 // mqtt client settings
 // Change "heatpump" to be same on all lines
-const char* ha_entity_id                        = "Heat Pump"; // Device Name displayed in Home Assistant
+const char* name                                = "Heat Pump"; // Device Name displayed in Home Assistant
 const char* client_id                           = "heatpump"; // WiFi hostname, OTA hostname, MQTT hostname
 const char* heatpump_topic                      = "heatpump"; // MQTT topic, must be unique between heat pump unit
-const char* heatpump_availability_topic         = "heatpump/tele/lwt";
+const char* heatpump_availability_topic         = "heatpump/tele/avty";
 const char* heatpump_state_topic                = "heatpump/tele/stat";
-const char* heatpump_temperature_topic          = "heatpump/tele/temp";
+const char* heatpump_current_topic              = "heatpump/tele/curr";
 const char* heatpump_attribute_topic            = "heatpump/tele/attr";
 const char* heatpump_mode_command_topic         = "heatpump/cmnd/mode";
 const char* heatpump_temperature_command_topic  = "heatpump/cmnd/temp";
