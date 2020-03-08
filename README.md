@@ -8,7 +8,11 @@ Mitsubishi Heat Pump (Air Conditioner) Controller for Home Assistant
 Build ESP-8266 device to interface between Mitsubishi Electric heat pump and Home Assistant. This code utilizes Home Assistant native MQTT HVAC component with MQTT discovery feature so it should be compatible with future Home Assistant updates and will be added to Home Assistant automatically without any configuration.
 
 ## Hardware
-Tested on Wemos D1 mini board with Home Assistant 0.96 and Mosquitto broker add-on 5.0.
+The easiest way to buid a controller is to use Wemos D1 mini board since it already has 5V pin. Only board V2 is working out of box, not current board V3. Notice the big shield on board when you place order.
+
+![wemos](https://user-images.githubusercontent.com/44964969/76160597-137cfd80-615e-11ea-8bf2-d9a6be363fc5.jpg)
+
+A connector to CN105 port on heat pump is JST PAP-05V-S.
 
 ## Build a code
 Using Arduino IDE to modify configuration and complie file for your hardware.
@@ -18,6 +22,8 @@ ArduinoJson 6.12.0
 PubSubClient 2.7.0
 
 Edit file Arduino\libraries\PubSubClient\PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048.
+
+Tested on Wemos D1 mini board with Home Assistant 0.96 and Mosquitto broker add-on 5.0.
 
 ## Known Issues
 * Sometimes heat pump unit turns off instead when send temperature changing command.
