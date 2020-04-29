@@ -16,7 +16,7 @@ PubSubClient mqtt_client(espClient);
 HeatPump hp;
 unsigned long lastTempSend;
 
-const char* controller_sw_version       = "20190925"; // Software Version displayed in Home Assistant
+const char* controller_sw_version       = "20200429";
 
 void mqttConnect() {
   while (!mqtt_client.connected()) {
@@ -45,6 +45,7 @@ void mqttAutoDiscovery() {
   rootDiscovery["min_temp"]            = min_temp;
   rootDiscovery["max_temp"]            = max_temp;
   rootDiscovery["temp_step"]           = temp_step;
+  rootDiscovery["temperature_unit"]           = "C";
   JsonArray modes                      = rootDiscovery.createNestedArray("modes");
     modes.add("heat_cool");
     modes.add("cool");
