@@ -23,12 +23,28 @@ PubSubClient 2.7.0
 
 Edit file Arduino\libraries\PubSubClient\PubSubClient.h MQTT_MAX_PACKET_SIZE to 2048.
 
+Optionally copy `mitsucon/secrets.example.h` to `mitsucon/secrets.h` to pre-fill WiFi, MQTT and OTA settings at build time. Without it the firmware still builds, and settings are entered on the web interface after the first boot (see below). Without `secrets.h` the OTA and firmware upload password is `mitsucon`; set your own `OTA_PASSWORD` in `secrets.h`. The unit number selects hostname and MQTT topic (`heatpump0`, `heatpump1`, ...):
+
+```
+arduino-cli compile --fqbn esp8266:esp8266:d1_mini:eesz=4M2M --build-property "build.extra_flags=-DHP_ID=1" --build-path build/hp1 mitsucon
+python3 ~/.arduino15/packages/esp8266/hardware/esp8266/3.1.2/tools/espota.py -i heatpump1.lan -p 8266 -a OTA_PASSWORD -f build/hp1/mitsucon.ino.bin
+```
+
+## Web interface
+Each controller serves a status/control page at `http://<controller>/`. Temperatures can be shown in °C or °F (remembered per browser). Settings (WiFi, MQTT) and reboot at `/config` are open; firmware upload (`/update`) requires user `admin` with the OTA password.
+
+<img src="docs/screenshots/web-status.png" width="300" alt="Status and controls page"> <img src="docs/screenshots/web-settings.png" width="300" alt="Settings page">
+
+Thermostat limits advertised to Home Assistant default to 16–31 °C in 1° steps; override `MIN_TEMP`, `MAX_TEMP` and `TEMP_STEP` in `secrets.h` to match your remote control.
+
+If no WiFi is configured, or the configured WiFi is unreachable for 60 seconds, the controller opens an open access point `MitsuCon-heatpump<N>`. Join it and browse to `http://192.168.4.1/config` to enter new credentials; the controller saves them and reboots. It keeps retrying the old network while nobody is connected to the access point, and closes the access point once it reconnects.
+
 Tested on Wemos D1 mini board with Home Assistant 0.96 and Mosquitto broker add-on 5.0.
 
 ## Known Issues
 * Sometimes heat pump unit turns off instead when send temperature changing command.
 * When change setting on HA UI, change will effect immediately but UI will delay for next data pull to refresh new status.
-* Cannot use imperial (fahrenheit) unit. Waiting for Home Assistant support soon.
+* The controller always works in Celsius. Home Assistant converts to °F automatically when its unit system is set to US customary, and the web interface has a °C/°F display toggle.
 
 ## Classic Code
 The Classic folder is a code proven to working well on Home Assistant < 0.100.0. It has 2 parts:
